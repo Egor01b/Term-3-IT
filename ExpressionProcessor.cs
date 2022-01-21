@@ -31,7 +31,7 @@ public class ExpressionProcessor
     public Stack TokenizeString(string str)
     {
         var ar = str.ToCharArray();
-        var buffer = 0;
+        float buffer  = 0;
         var returnValue = new Stack();
         var operationStack = new Stack();
         foreach (var s in ar)
@@ -88,5 +88,25 @@ public class ExpressionProcessor
             returnValue.Push(operationStack.Pop());
 
         return returnValue;
+    }
+
+    public float Calculate(Stack expression)
+    {
+        var s = new Stack();
+        while (true)
+        {
+            var t = expression.Pop();
+            if (t is float) s.Push(t);
+            if (t is char)
+            {
+                if ((char) t == '+') s.Push((float) s.Pop() + (float) s.Pop());
+                if ((char) t == '-') s.Push((float) s.Pop() - (float) s.Pop());
+                if ((char) t == '*') s.Push((float) s.Pop() * (float) s.Pop());
+                if ((char) t == '/') s.Push((float) s.Pop() / (float) s.Pop());
+                if ((char) t == '^') s.Push(Math.Pow((float) s.Pop(), (float) s.Pop()));
+            }
+
+            if (expression.GetTop() == null) return (float) s.Pop();
+        }
     }
 }
