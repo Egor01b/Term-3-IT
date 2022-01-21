@@ -24,7 +24,7 @@ public class ExpressionProcessor
             '/', 2
         },
         {
-            'ˆ', 4
+            '^', 4
         }
     };
 
@@ -61,7 +61,6 @@ public class ExpressionProcessor
                 var stackPrior = operationStack.GetTop() == null
                     ? -1
                     : _operatorPrior[(char) operationStack.GetTop()];
-                operationStack.Push(s);
                 while (_operatorPrior[s] <= stackPrior)
                 {
                     returnValue.Push(operationStack.Pop());
