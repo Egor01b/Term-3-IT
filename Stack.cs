@@ -10,8 +10,13 @@ public class Stack
         {
             Next = _top, Value = value
         };
+    } 
+    
+    public object GetTop()
+    {
+        return _top.Value;
     }
-
+    
     public object Pop()
     {
         var returnValue = _top.Value;
