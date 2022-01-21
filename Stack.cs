@@ -14,6 +14,7 @@ public class Stack
     
     public object GetTop()
     {
+        if (_top == null) return null;
         return _top.Value;
     }
     
