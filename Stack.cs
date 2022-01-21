@@ -2,15 +2,21 @@ namespace Algorithms1;
 
 public class Stack
 {
-    private Element _top;
+    private Element _top = null;
 
     public void Push(string value)
     {
+        _top = new Element()
+        {
+            Next = _top, Value = value
+        };
     }
 
     public string Pop()
     {
-        return "";
+        var returnValue = _top.Value;
+        _top = _top.Next;
+        return returnValue;
     }
 
     private class Element
