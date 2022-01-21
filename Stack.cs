@@ -4,7 +4,7 @@ public class Stack
 {
     private Element _top = null;
 
-    public void Push(string value)
+    public void Push(object value)
     {
         _top = new Element()
         {
@@ -12,7 +12,7 @@ public class Stack
         };
     }
 
-    public string Pop()
+    public object Pop()
     {
         var returnValue = _top.Value;
         _top = _top.Next;
@@ -22,6 +22,6 @@ public class Stack
     private class Element
     {
         public Element Next;
-        public string Value;
+        public object Value;
     }
 }
