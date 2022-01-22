@@ -31,7 +31,7 @@ public class ExpressionProcessor
     public Stack TokenizeString(string str)
     {
         var ar = str.ToCharArray();
-        float buffer  = 0;
+        double buffer  = 0;
         var returnValue = new Stack();
         var operationStack = new Stack();
         foreach (var s in ar)
@@ -62,9 +62,13 @@ public class ExpressionProcessor
                 if (operationStack.GetTop() != null && _signs.Contains((char)operationStack.GetTop()))
                 {
                     var stackPrior = _operatorPrior[(char)operationStack.GetTop()];
-                    while (_operatorPrior[s] <= stackPrior)
+                    while (_operatorPrior[s] <= stackPrior && operationStack.GetTop() != null)
                     {
                         returnValue.Push(operationStack.Pop());
+                        if (operationStack.GetTop() == null)
+                        {
+                            break;
+                        }
                         stackPrior = _operatorPrior[(char)operationStack.GetTop()];
                     }
                 }
@@ -88,7 +92,7 @@ public class ExpressionProcessor
         return returnValue;
     }
 
-    public float Calculate(Stack expression_)
+    public double Calculate(Stack expression_)
     {
         var s = new Stack();
         var expression = new Stack();
@@ -99,21 +103,23 @@ public class ExpressionProcessor
         while (true)
         {
             var t = expression.Pop();
-            if (t is float) 
+            if (t is double) 
             { 
                 s.Push(t); 
             }
             else if (t is char)
             {
-                var first = (float)s.Pop();
-                if ((char) t == '+') s.Push((float) s.Pop() + first);
-                else if ((char) t == '-') s.Push((float) s.Pop() - first);
-                else if ((char) t == '*') s.Push((float) s.Pop() * first);
-                else if ((char) t == '/') s.Push((float) s.Pop() / first);
-                else if ((char) t == '^') s.Push(Math.Pow((float)(s.Pop()), first));
+                var first = (double)s.Pop();
+                var f = s.Pop();
+                var second = (double) f;
+                if ((char) t == '+') s.Push(second + first);
+                else if ((char) t == '-') s.Push(second - first);
+                else if ((char) t == '*') s.Push(second * first);
+                else if ((char) t == '/') s.Push(second / first);
+                else if ((char) t == '^') s.Push(Math.Pow(second, first));
             }
 
-            if (expression.GetTop() == null) return (float) s.Pop();
+            if (expression.GetTop() == null) return (double) s.Pop();
         }
     }
 }
